@@ -1,41 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hospital's End</title>
+    <title>Hospital's End - Appointments List</title>
 </head>
 <body>
-    <h1>List of Appointments</h1>
+    <h1>Appointments List</h1>
+
+    <!-- Search form for filtering appointments by name or mobile number -->
     <form method="get" action="">
-        <input type="text" name="q" placeholder="Search by name or mobile number">
+        <label for="q">Search by Name or Mobile Number:</label>
+        <input type="text" name="q" value="{{ request.GET.q }}">
         <button type="submit">Search</button>
     </form>
+
+    <!-- Form for grouping appointments by doctor -->
     <form method="get" action="">
         <label for="doctor_group">Group by Doctor:</label>
         <select name="doctor_group">
             <option value="">All Doctors</option>
             {% for doctor in doctors %}
-            <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+                <option value="{{ doctor.id }}">{{ doctor.name }}</option>
             {% endfor %}
         </select>
         <button type="submit">Group</button>
     </form>
+
+    <!-- Form for filtering appointments by department -->
+    <form method="get" action="">
+        <label for="department_filter">Filter by Department:</label>
+        <select name="department_filter">
+            <option value="">All Departments</option>
+            {% for department in departments %}
+                <option value="{{ department.id }}">{{ department.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <!-- Table to display the list of appointments -->
     <table>
-        <tr>
-            <th>Token Number</th>
-            <th>Name</th>
-            <th>Mobile Number</th>
-            <th>Department</th>
-            <th>Doctor</th>
-        </tr>
-        {% for appointment in appointments %}
-        <tr>
-            <td>{{ appointment.token_number }}</td>
-            <td>{{ appointment.name }}</td>
-            <td>{{ appointment.mobile_number }}</td>
-            <td>{{ appointment.department.name }}</td>
-            <td>{{ appointment.doctor.name }}</td>
-        </tr>
-        {% endfor %}
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Mobile Number</th>
+                <th>Department</th>
+                <th>Doctor</th>
+                <th>Token Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+                <tr>
+                    <td>{{ appointment.name }}</td>
+                    <td>{{ appointment.mobile_number }}</td>
+                    <td>{{ appointment.department.name }}</td>
+                    <td>
+                        {% if appointment.doctor %}
+                            {{ appointment.doctor.name }}
+                        {% else %}
+                            Not Assigned
+                        {% endif %}
+                    </td>
+                    <td>{{ appointment.token_number }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 </body>
 </html>

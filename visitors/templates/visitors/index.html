@@ -13,13 +13,24 @@
         <input type="text" name="mobile_number" required>
         <label for="department_id">Department:</label>
         <select name="department_id" required>
-            
             {% for department in departments %}
             <option value="{{ department.id }}">{{ department.name }}</option>
             {% endfor %}
-            
         </select>
+        <!-- Hidden field for department name -->
+        <input type="hidden" name="department_name" id="department_name" value="">
         <button type="submit">Create Appointment</button>
     </form>
+
+    <script>
+        // JavaScript to populate the hidden department name field
+        const departmentSelect = document.querySelector('select[name="department_id"]');
+        const departmentNameField = document.getElementById('department_name');
+
+        departmentSelect.addEventListener('change', function() {
+            const selectedOption = departmentSelect.options[departmentSelect.selectedIndex];
+            departmentNameField.value = selectedOption.text;
+        });
+    </script>
 </body>
 </html>
