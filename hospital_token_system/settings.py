@@ -38,8 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'visitors',
-    'hospital',
+    'hospital',   
+    'authentication_app',
 ]
+
+LOGIN_REDIRECT_URL = '/visitors'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,6 +56,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'hospital_token_system.urls'
+
+
 
 TEMPLATES = [
     {

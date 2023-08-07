@@ -36,7 +36,7 @@ def create_appointment(request):
             token_number=doctor_token.token_number
         )
         
-        return JsonResponse({'token_number': doctor_token.token_number})
+        return render(request, 'visitors/appointment_success.html', {'token_number': appointment.token_number})
 
 def index(request):
     departments = Department.objects.all()
