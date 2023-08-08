@@ -5,6 +5,7 @@
 </head>
 <body>
     <h1>Select a department and create an appointment</h1>
+    {% if user.is_authenticated %}
     <form method="post" action="{% url 'create_appointment' %}">
         {% csrf_token %}
         <label for="name">Name:</label>
@@ -21,6 +22,9 @@
         <input type="hidden" name="department_name" id="department_name" value="">
         <button type="submit">Create Appointment</button>
     </form>
+    {% else %}
+    <p>You must be logged in to create an appointment.</p>
+    {% endif %}
 
     <script>
         // JavaScript to populate the hidden department name field

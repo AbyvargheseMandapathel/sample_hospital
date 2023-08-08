@@ -37,6 +37,7 @@
         <button type="submit">Filter</button>
     </form>
 
+    {% if user.is_authenticated %}
     <!-- Table to display the list of appointments -->
     <table>
         <thead>
@@ -66,5 +67,8 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <p>You must be logged in to view the appointments list.</p>
+    {% endif %}
 </body>
 </html>

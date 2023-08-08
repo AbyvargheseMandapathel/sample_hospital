@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Department, Appointment, Doctor, DoctorToken
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def create_appointment(request):
     if request.method == 'POST':
         name = request.POST.get('name')

@@ -6,9 +6,13 @@
     <title>Success</title>
 </head>
 <body>
+    {% if user.is_authenticated %}
     <h1>New Appointment Created</h1>
     <p>Doctor: {{ doctor_name }}</p>
     <p>Token Number: {{ token_number }}</p>
-    <a href="{% url 'visitors:index' %}">Book New Appointment</a>
+    
+    {% else %}
+        <p>Please <a href="{% url 'login' %}">log in</a> to book a new appointment.</p>
+    {% endif %}
 </body>
 </html>
