@@ -7,6 +7,8 @@
 </head>
 <body>
     <h1>New Appointment Created</h1>
-    <a href="{% url 'visitors:index' %}">New Appointment</a>
+    <p>Doctor: {{ doctor_name }}</p>
+    <p>Token Number: {{ token_number }}</p>
+    <a href="{% url 'visitors:index' %}">Book New Appointment</a>
 </body>
 </html>

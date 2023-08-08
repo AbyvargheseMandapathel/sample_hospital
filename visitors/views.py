@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Department, Appointment, Doctor,DoctorToken
+from .models import Department, Appointment, Doctor, DoctorToken
 
 def create_appointment(request):
     if request.method == 'POST':
@@ -36,7 +36,12 @@ def create_appointment(request):
             token_number=doctor_token.token_number
         )
         
-        return render(request, 'visitors/appointment_success.html', {'token_number': appointment.token_number})
+        context = {
+            'token_number': appointment.token_number,
+            'doctor_name': selected_doctor.name  # Pass the doctor's name to the template
+        }
+        return render(request, 'visitors/appointment_success.html', context)
+
 
 def index(request):
     departments = Department.objects.all()
