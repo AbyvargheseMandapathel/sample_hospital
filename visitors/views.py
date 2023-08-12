@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Department, Appointment, Doctor, DoctorToken
 from django.contrib.auth.decorators import login_required
@@ -15,8 +15,8 @@ def create_appointment(request):
         doctors = department.doctor_set.all()
         
         # Find the doctor with the fewest number of appointments and calculate token number
-        selected_doctor = None
         min_appointments = float('inf')
+        selected_doctor = None
         for doctor in doctors:
             appointments_count = Appointment.objects.filter(doctor=doctor).count()
             if appointments_count < min_appointments:
@@ -26,10 +26,12 @@ def create_appointment(request):
         # Retrieve or create a DoctorToken object for the selected doctor
         doctor_token, created = DoctorToken.objects.get_or_create(doctor=selected_doctor)
         
-        # Increment the doctor's token number
-        doctor_token.token_number += 1
-        doctor_token.save()
+        # Increment the doctor's token number only if there are no existing appointments with the same token
+        while Appointment.objects.filter(token_number=doctor_token.token_number).exists():
+            doctor_token.token_number += 1
+            doctor_token.save()
         
+        # Create the appointment with the calculated token number
         appointment = Appointment.objects.create(
             name=name,
             mobile_number=mobile_number,
@@ -40,10 +42,12 @@ def create_appointment(request):
         
         context = {
             'token_number': appointment.token_number,
-            'doctor_name': selected_doctor.name  # Pass the doctor's name to the template
+            'doctor_name': selected_doctor.name
         }
         return render(request, 'visitors/appointment_success.html', context)
-
+    
+    # Return a default response if the request method is not POST
+    return JsonResponse({'message': 'Invalid request method'})
 
 def index(request):
     departments = Department.objects.all()
